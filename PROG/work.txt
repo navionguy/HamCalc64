@@ -1,0 +1,90 @@
+CAL-X.BAS:20 CHDIR "\hamcalc64\prog"
+CAL-X.BAS:530 IF P=41 THEN CLS:CHAIN"\hamcalc64\prog\hcal"
+CAL-X.BAS:540 IF P=42 THEN CLS:CHAIN"\hamcalc64\prog\hamdex"
+HAMCAL-X.BAS:20 CHDIR "\hamcalc64\prog"
+HAMCAL-X.BAS:540 IF P=41 THEN CLS:CHAIN"\hamcalc64\prog\hcal"
+HAMCAL-X.BAS:550 IF P=42 THEN CLS:CHAIN"\hamcalc64\prog\hamdex"
+HCA.BAS:10 '\hamcalc64\prog\HCAL - HAMCALC Main menu - 03 JUN 94 - rev. 14 DEC 2010
+HCA.BAS:80 IF EX$="\hamcalc64\prog\hcal"THEN 110
+HCA.BAS:90 IF EX$=""THEN EX$="\hamcalc64\prog\hcal":CHAIN"\hamcalc64\prog\intro"
+HCA.BAS:720 DATA \hamcalc64\prog\quiktabl,QuikTables
+HCA.BAS:730 DATA \hamcalc64\prog\hcal-a,Program Menu A  ( A.C.- Cap )
+HCA.BAS:740 DATA \hamcalc64\prog\hcal-b,Program Menu B  ( Cap - Cos )
+HCA.BAS:750 DATA \hamcalc64\prog\hcal-c,Program Menu C  ( Cro - Guy )
+HCA.BAS:760 DATA \hamcalc64\prog\hcal-d,Program Menu D  ( Hai - Log )
+HCA.BAS:770 DATA \hamcalc64\prog\hcal-e,Program Menu E  ( Log - Op  )
+HCA.BAS:780 DATA \hamcalc64\prog\hcal-f,Program Menu F  ( Op  - Sca )
+HCA.BAS:790 DATA \hamcalc64\prog\hcal-g,Program Menu G  ( Sch - Tra )
+HCA.BAS:800 DATA \hamcalc64\prog\hcal-h,Program Menu H  ( Tra - Wir )
+HCA.BAS:810 DATA \hamcalc64\prog\hcal-i,Program Menu I  ( Wir - Zep )
+HCA.BAS:820 DATA \hamcalc64\prog\hamdex,INDEX
+HCA.BAS:830 DATA \hamcalc64\prog\helphint,READ ME
+HCA.BAS:840 DATA \hamcalc64\prog\logoclok,Clock Screen Saver
+HCA.BAS:850 DATA \hamcalc64\prog\newsince,Recent program additions & upgrades
+HCA.BAS:860 'DATA \hamcalc64\prog\printip,Printer Tips
+HCA.BAS:870 DATA \hamcalc64\prog\zexit,EXIT
+HCAL-1.BAS:35 EX$="\hamcalc64\prog\hcal-" + X$
+HCAL-1.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-A.BAS:30 X$="A":EX$="\hamcalc64\prog\hcal-"+X$
+HCAL-A.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-B.BAS:30 X$="B":EX$="\hamcalc64\prog\hcal-"+X$
+HCAL-B.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-C.BAS:30 X$="C":EX$="\hamcalc64\prog\hcal-"+X$
+HCAL-C.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-D.BAS:30 X$="D":EX$="\hamcalc64\prog\hcal-"+X$
+HCAL-D.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-E.BAS:30 X$="E":EX$="\hamcalc64\prog\hcal-"+X$
+HCAL-E.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-F.BAS:30 X$="F":EX$="\hamcalc64\prog\hcal-"+X$
+HCAL-F.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-G.BAS:30 X$="G":EX$="\hamcalc64\prog\hcal-"+X$
+HCAL-G.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-H.BAS:30 X$="H":EX$="\hamcalc64\prog\hcal-"+X$
+HCAL-H.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-I.BAS:30 X$="I":EX$="\hamcalc64\prog\hcal-"+X$
+HCAL-I.BAS:40 CHAIN"\hamcalc64\prog\hcal-x"
+HCAL-X.BAS:20 'CHDIR "\hamcalc64\prog"
+HCAL-X.BAS:540 IF P=41 THEN CLS:CHAIN"\hamcalc64\prog\hcal"
+HCAL-X.BAS:550 IF P=42 THEN CLS:CHAIN"\hamcalc64\prog\hamdex"
+HCAL-Z.BAS:20 CHDIR "\hamcalc64\prog"
+HCAL-Z.BAS:530 IF P=41 THEN CLS:CHAIN"\hamcalc64\prog\hcal"
+HCAL-Z.BAS:540 IF P=42 THEN CLS:CHAIN"\hamcalc64\prog\hamdex"
+HCAL.BAS:80 IF EX$="\hamcalc64\prog\hcal"THEN 110
+HCAL.BAS:95 EX$="\hamcalc64\prog\hcal"
+HCAL.BAS:96 CHAIN"\hamcalc64\prog\intro"
+HCAL.BAS:570 CLS:'CHDIR"\hamcalc64\prog"
+HCAL.BAS:720 DATA \hamcalc64\prog\quiktabl,QuikTables
+HCAL.BAS:730 DATA \hamcalc64\prog\hcal-a,Program Menu A  ( A.C.- Cap )
+HCAL.BAS:740 DATA \hamcalc64\prog\hcal-b,Program Menu B  ( Cap - Cos )
+HCAL.BAS:750 DATA \hamcalc64\prog\hcal-c,Program Menu C  ( Cro - Guy )
+HCAL.BAS:760 DATA \hamcalc64\prog\hcal-d,Program Menu D  ( Guy - Log )
+HCAL.BAS:770 DATA \hamcalc64\prog\hcal-e,Program Menu E  ( Log - Op  )
+HCAL.BAS:780 DATA \hamcalc64\prog\hcal-f,Program Menu F  ( Op  - S-  )
+HCAL.BAS:790 DATA \hamcalc64\prog\hcal-g,Program Menu G  ( Sag - Tor )
+HCAL.BAS:800 DATA \hamcalc64\prog\hcal-h,Program Menu H  ( Tra - Whe )
+HCAL.BAS:810 DATA \hamcalc64\prog\hcal-i,Program Menu I  ( Win - Zep )
+HCAL.BAS:820 DATA \hamcalc64\prog\hamdex,INDEX
+HCAL.BAS:830 DATA \hamcalc64\prog\helphint,READ ME
+HCAL.BAS:840 DATA \hamcalc64\prog\logoclok,Clock Screen Saver
+HCAL.BAS:850 DATA \hamcalc64\prog\newsince,Recent program additions & upgrades
+HCAL.BAS:870 DATA \hamcalc64\prog\zexit,EXIT
+HCALC.BAS:20 'CHDIR "\hamcalc64\prog"
+HCALC.BAS:4380 DATA \hamcalc64\prog\hcal-,Last Menu
+HCALC.BAS:4390 DATA \hamcalc64\prog\hcal-,Next Menu
+HCALC.BAS:4400 DATA \hamcalc64\prog\hcal,Main Menu
+HCALC.BAS:4410 DATA \hamcalc64\prog\hamdex,Index
+HCALC.BAS:4420 DATA \hamcalc64\prog\exit,EXIT
+INTRO.BAS:52 EX$ = "\hamcalc64\prog\hcal" : V$ = "." : D$ = ".": Z$ = ";": X$ = "A"
+INTRO.BAS:650 CLS: EX$ = "\hamcalc64\prog\hcal": CHAIN EX$
+PROG.BAS:10 '\hamcalc64\prog\HCAL-X   02 JUN 94 rev. 28 JAN 2008
+PROG.BAS:20 CHDIR "\hamcalc64\prog"
+PROG.BAS:4000 DATA \hamcalc64\prog\hcal-,Last Menu
+PROG.BAS:4010 DATA \hamcalc64\prog\hcal-,Next Menu
+PROG.BAS:4020 DATA \hamcalc64\prog\hcal,Main Menu
+PROG.BAS:4030 DATA \hamcalc64\prog\hamdex,Index
+PROG.BAS:4040 DATA \hamcalc64\prog\exit,EXIT
+RJD.BAS:40 PROG$="\hamcalc64\prog\rjd
+RUN.BAS:70 OPEN"I",1,"\hamcalc64\docfiles\newsince.rtf"
+RUN.BAS:150 OPEN"I",1,"\hamcalc64\docfiles\newsince.rtf"
+TJD.BAS:40 PROG$="\hamcalc64\prog\rjd
+TJD.BAS:550 H$="\hamcalc64\prog\"+A$(Z):CHAIN H$
