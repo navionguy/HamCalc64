@@ -1,0 +1,51 @@
+1 COMMON A, AL, B, BASEONLY, C, C$, C1, CAT$, CC, CKT$, D, D$, DD, DIA, DIMN$, DMS, E, EO, EX$, F, F$, FD, FF, FQ, FRQ, G$, GO$, I, I$, L, LATLONG, LD, LL, LN, LS, LW, LX, MAX, MENU, MIN, MX, N, NN, NT, OV, P, PI, PROG$, Q, QQ, QU, R, RA, RC, T, T$, U, U$, UH, UL$, V$, VC, W, WHIP, WIRD, WW, X, X$, X1, XS, Z$, ZP, ZS
+5 'OMMON EX$,PROG$
+10 'HUMID - Humidex Calculator - 05 MAR 08 rev. 23 feb 2010
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 IF PROG$=""THEN GO$=EX$ ELSE GO$=PROG$
+50 PROG$="humid"
+60 
+70 X$=STRING$(30,32)
+80 '.....title page
+90 CLS
+100 COLOR 15,2,0
+110 PRINT " HUMIDEX Calculator";TAB(66);"by R.J.Dehoney ";
+120 COLOR 1,0:PRINT STRING$(80,223);
+130 COLOR 7,0
+140 PRINT " This program calculates humidex, given the temperature and relati";
+150 PRINT "ve humidity."
+160 COLOR 0,7
+170 LOCATE ,17:PRINT  " VALID ONLY FOR TEMPERATURES OVER 27øC (80øF).";:COLOR 7,0
+180 PRINT
+190 PRINT " .....Press 1 for temperatures in øcelsius"
+200 PRINT "            2 for temperatures in øfahrenheit"
+210 PRINT "            3 Windchill factor calculator"
+220 PRINT "            0 to EXIT"
+230 Z$=INKEY$:IF Z$=""THEN 230
+240 IF Z$="0"THEN RUN GO$
+250 IF Z$="1"THEN T$="C":GOTO 290
+260 IF Z$="2"THEN T$="F":GOTO 290
+270 IF Z$="3"THEN CHAIN"windchil"
+280 GOTO 240
+290 VIEW PRINT 2 TO 24:CLS:VIEW PRINT:LOCATE 3
+300 IF T$="C"THEN INPUT " ENTER: Temperature in degrees C ";TX
+310 IF T$="F"THEN INPUT " ENTER: Temperature in degrees F ";TX
+320 IF T$="F"THEN TX=(TX-32)*5/9
+330 IF TX<27 THEN BEEP:GOTO 160
+340 TH=TX:IF T$="F"THEN TH=TX*9/5+32
+350 LOCATE CSRLIN-1:PRINT USING " Thermometer reads ###.#ø";TH;:PRINT T$+X$
+360 PRINT
+370 INPUT " ENTER: Percent relative humidity ";R
+380 LOCATE CSRLIN-1:PRINT USING " Hygrometer reads  ###.#%";R;:PRINT X$
+390   Z=TX*9/5+32
+400   THI1=-4.237900E+01+2.049015230000000*Z+1.014333127000000E+01*R-2.247554099999999E-01*Z*R-6.837829E-03*Z^2
+410   THI2=-5.481716E-02*R^2+1.228739E-03*Z^2*R+8.528199E-04*Z*R^2-1.990000E-06*Z^2*R^2
+420   THIX=THI1+THI2 :THIC=(THIX-32)*5/9 :THIF=THIX
+430 PRINT
+440 COLOR 0,7
+450 PRINT USING " FEELS LIKE TEMPERATURE IS ###.#øC  ###.#øF";THIC,THIF
+460 COLOR 7,0
+470 PRINT
+480 PRINT " .....Press any key....."
+490 Z$=INKEY$:IF Z$=""THEN 490 ELSE 80

@@ -1,0 +1,42 @@
+1 COMMON A, AL, B, BASEONLY, C, C$, C1, CAT$, CC, CKT$, D, D$, DD, DIA, DIMN$, DMS, E, EO, EX$, F, F$, FD, FF, FQ, FRQ, G$, GO$, I, I$, L, LATLONG, LD, LL, LN, LS, LW, LX, MAX, MENU, MIN, MX, N, NN, NT, OV, P, PI, PROG$, Q, QQ, QU, R, RA, RC, T, T$, U, U$, UH, UL$, V$, VC, W, WHIP, WIRD, WW, X, X$, X1, XS, Z$, ZP, ZS
+10 'YAGILONG - Extremely Long Yagi - 06 MAY 95 rev. 28 JUL 03
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 COLOR 7,0,0
+50 DIM S(100),D(100),DH(100),DL(100),T(100)
+60 UL$=STRING$(80,205)
+70 U$="#####.###"
+80 '
+90 '.....start
+100 CLS
+110 COLOR 15,2
+120 PRINT " YAGI ANTENNA - Extremely Long";TAB(60);;"by Gnter Hoch DL6WU ";
+130 COLOR 1,0:PRINT STRING$(80,223);
+140 COLOR 7,0
+150 TB=9
+160 PRINT TAB(TB);
+170 PRINT "Program written by Jerry Haigwood, KY4Z, and Bob Stein, W6NBI,"
+180 PRINT TAB(TB);
+190 PRINT "based on the article 'Extremely Long Yagi Antennas' by Gnter"
+200 PRINT TAB(TB);
+210 PRINT "Hoch, DL6WU, in the March 1981 issue of VHF Communications."
+220 PRINT TAB(TB);
+230 PRINT "Program edited for HAMCALC by George Murphy, VE3ERP."
+240 PRINT UL$;
+250 COLOR 0,7:LOCATE CSRLIN,22
+260 PRINT " Press 1 to continue or 0 to EXIT....."
+270 COLOR 7,0
+280 Z$=INKEY$:IF Z$=""THEN 280
+290 IF Z$="0"THEN CLS:RUN EX$
+300 IF Z$="1"THEN 330
+310 GOTO 290
+320 '
+330 LOCATE CSRLIN-1:PRINT STRING$(80,32);:LOCATE CSRLIN-1
+340 '.....input frequency
+350 INPUT " ENTER: Design Frequency (MHz)........";F
+360 IF F>0 GOTO 400
+370 PRINT : PRINT" ---> STOP FOOLING AROUND - ENTER A FREQUENCY!"
+380 PRINT : GOTO 350
+390 '
+400 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+410 CM=2.997930E+04 : I=1.180290E+04

@@ -1,0 +1,354 @@
+1 COMMON A, AL, B, BASEONLY, C, C$, C1, CAT$, CC, CKT$, D, D$, DD, DIA, DIMN$, DMS, E, EO, EX$, F, F$, FD, FF, FQ, FRQ, G$, GO$, I, I$, L, LATLONG, LD, LL, LN, LS, LW, LX, MAX, MENU, MIN, MX, N, NN, NT, OV, P, PI, PROG$, Q, QQ, QU, R, RA, RC, T, T$, U, U$, UH, UL$, V$, VC, W, WHIP, WIRD, WW, X, X$, X1, XS, Z$, ZP, ZS
+5 'OMMON EX$,PROG$,U,UH,FQ,WHIP
+10 'MOWHIP - mobile/whip antenna - 13 JAN 94 rev. 26 NOV 2010
+20 IF EX$=""THEN EX$="EXIT"
+30 PROG$="mowhip"
+40 
+50 CLS:KEY OFF
+60 COLOR 7,0,1
+70 DIM S(9,7)  'single element data
+80 DIM D(9,8)  'double element data
+90 UL$=STRING$(80,205)
+100 U1$="#####.##"
+110 U2$="#####.###"
+120 U3$="#####.####"
+130 A$=STRING$(7,32)
+140 B$=STRING$(19,".")
+150 C$=STRING$(80,32)
+160 PI=3.141592
+170 GOTO 230
+180 '
+190 '.....erase line
+200 LOCATE CSRLIN-1:PRINT C$;:LOCATE CSRLIN-1
+210 RETURN
+220 '
+230 '.....start
+240 CLS:F=0
+250 COLOR 15,2
+260 PRINT " MOBILE/MARITIME HF WHIP ANTENNAS";
+270 PRINT TAB(57);;"by George Murphy VE3ERP ";
+280 COLOR 1,0:PRINT STRING$(80,223);
+290 COLOR 7,0
+300 X=17:LOCATE 3:GOSUB 560
+310 X=42:LOCATE 3:GOSUB 430
+320 PRINT UL$;
+330 GOSUB 3200   'preface
+340 COLOR 0,7:LOCATE 25,22
+350 PRINT " Press 1 to continue or 0 to EXIT.... ";
+360 COLOR 7,0
+370 Z$=INKEY$:IF Z$=""THEN 370
+380 IF Z$="0"THEN CLS:RUN EX$
+390 IF Z$="1"THEN 690
+400 GOTO 370
+410 '
+420 '.....diagrams
+430 COLOR 0,7
+440 LOCATE ,X:PRINT "     DOUBLE ELEMENT    "
+450 LOCATE ,X:PRINT "  Ú¯ Ò                 "
+460 LOCATE ,X:PRINT "  H2 º®Äupper element  "
+470 LOCATE ,X:PRINT "  À¯ÚÐ¿®Äloading coil  "
+480 LOCATE ,X:PRINT "  Ú¯ÀÒÙ                "
+490 LOCATE ,X:PRINT "  H1 º®Älower element  "
+500 LOCATE ,X:PRINT "  À¯ ÐÄ ®¿feed         "
+510 LOCATE ,X:PRINT "     ÚÄ ®Ùpoint        "
+520 LOCATE ,X:PRINT "    \Á\®Ävehicle body  "
+530 COLOR 7,0
+540 RETURN
+550 '
+560 COLOR 0,7
+570 LOCATE ,X:PRINT "     SINGLE ELEMENT    "
+580 LOCATE ,X:PRINT "  Ú¯ Ò                 "
+590 LOCATE ,X:PRINT "  ³  º                 "
+600 LOCATE ,X:PRINT "  H1 º®Äsingle element "
+610 LOCATE ,X:PRINT "  ³  º                 "
+620 LOCATE ,X:PRINT "  À¯ÚÐ¿®Äloading coil  "
+630 LOCATE ,X:PRINT "    ÀÄÁ ®¿feed         "
+640 LOCATE ,X:PRINT "     ÚÄ ®Ùpoint        "
+650 LOCATE ,X:PRINT "    \Á\®Ävehicle body  "
+660 COLOR 7,0
+670 RETURN
+680 '
+690 '.....input data
+700 VIEW PRINT 13 TO 24:CLS:VIEW PRINT:LOCATE 13
+710 PRINT " Do you want to input data in (c)entimetres or (i)nches?     (c/i)"
+720 Z$=INKEY$:IF Z$=""THEN 720
+730 IF Z$="c"THEN UM$="cm.":UM=2.539999:GOTO 770
+740 IF Z$="i"THEN UM$="in.":UM=1:GOTO 770
+750 GOTO 720
+760 '
+770 GOSUB 190
+780 PRINT " Do you want to design a (s)ingle or (d)ouble element whip?  (s/d)"
+790 I$=INKEY$:IF I$=""THEN 790
+800 IF I$="s"OR I$="d"THEN X=2:GOTO 810 ELSE 790
+810 IF I$="d"THEN Z$=" DOUBLE "ELSE Z$=" SINGLE "
+820 CLS:IF I$="d"THEN GOSUB 430 ELSE GOSUB 560
+830 LOCATE 1:PRINT Z$;;"ELEMENT MOBILE/MARITIME WHIP"
+840 '
+850 LOCATE 11
+860 INPUT "ENTER: Frequency of operation (0.495 - 30 MHz)........(MHz)";F
+870 IF F<4.950000E-01 OR F>30 THEN GOSUB 190:GOTO 850
+880 GOSUB 190
+890 LOCATE 2,26:PRINT "Operating frequency........";USING U2$;F;
+900 PRINT " MHz =";USING "#####.##";300/F;:PRINT " m."
+910 '
+920 LOCATE 11
+930 PRINT" ENTER: Diameter of element H1...................(";UM$;;")";
+940 INPUT DH1:DH1=DH1/UM
+950 IF DH1=0 THEN GOSUB 190:GOTO 920
+960 GOSUB 190
+970 LOCATE 4,26:PRINT "Diameter of element H1.....";USING U1$;DH1*2.539999;
+980 PRINT " cm.  =";USING "####.##";DH1;:PRINT " in."
+990 IF I$="s"THEN 1200
+1000 '
+1010 LOCATE 11
+1020 PRINT" ENTER: Diameter of element H2...................(";UM$;;")";
+1030 INPUT DH2:DH2=DH2/UM
+1040 IF DH1=0 THEN GOSUB 190:GOTO 1010
+1050 GOSUB 190:LOCATE 6,26
+1060 LOCATE 6,26:PRINT "Diameter of element H2.....";USING U1$;DH2*2.539999;
+1070 PRINT " cm.  =";USING "####.##";DH2;:PRINT " in."
+1080 '
+1090 H=45  'max.elec.lgth in degrees
+1100 LMAX=984*H/F/360*12  'max.length in inches
+1110 LOCATE 11
+1120 COLOR 0,7:PRINT " Maximum length H1+H2:";USING U1$;LMAX*2.539999;
+1130 PRINT " cm. =";USING U1$;LMAX;:PRINT " in. =";H;"elec.degrees "
+1140 COLOR 7,0
+1150 PRINT " ENTER: Your choice of total length H1+H2....(";UM$;;")";:INPUT Z
+1160 Z=Z/UM     'length in inches
+1170 H=Z/12/984*F*360   'length in electrical degrees
+1180 RR=H^2/312
+1190 '
+1200 '.....computation
+1210 IF I$="s"THEN 1240
+1220 IF I$="d"THEN 1920
+1230 '
+1240 '.....single element
+1250 FOR Z=5 TO 45 STEP 5
+1260 GOSUB 1800  'equations
+1270  S(Z/5,1)=Z                    'length in electrical degrees
+1280  S(Z/5,2)=H1*2.539999              'length in centimetres
+1290  S(Z/5,3)=H1                   'length in inches
+1300  S(Z/5,4)=RR
+1310  S(Z/5,5)=KM
+1320  S(Z/5,6)=XL
+1330  S(Z/5,7)=UH
+1340 NEXT Z
+1350 '
+1360 '.....screen display
+1370 LOCATE 10
+1380 PRINT UL$;
+1390 LOCATE CSRLIN-1,1:PRINT "Õ";:LOCATE ,30:PRINT"Ñ";:LOCATE ,54:PRINT "Ñ";:
+1400 LOCATE ,68:PRINT "Ñ";:LOCATE ,(80):PRINT "¸";
+1410 LOCATE CSRLIN-1,33:PRINT " TYPICAL VALUES "
+1420 PRINT "³ÚÄÄÄÄÄÄÄÄ Length H1 ÄÄÄÄÄÄÄ¿";TAB(30);;"³ Radiation";
+1430 PRINT TAB(42);"³  Antenna";TAB(54);;"³   Antenna";TAB(68);;"³  Loading";
+1440 PRINT TAB(80);"³";
+1450 PRINT "³ deg³     cm.   ³     in.";TAB(30);;"³ Resistance";
+1460 PRINT TAB(42);"³ Impedance";TAB(54);;"³  Reactance";TAB(68);;"³   Coil";
+1470 PRINT TAB(80);"³";
+1480 FOR Z=1 TO 9:FOR Y=1 TO 7
+1490 IF Y=1 THEN U$="³ ##ø"
+1500 IF Y=2 THEN U$="³#######.##"
+1510 IF Y=3 THEN U$=" ³#######.##"
+1520 IF Y=4 OR Y=5 THEN U$=" ³#####.## ê"
+1530 IF Y=6 THEN U$=" ³-j#####.## ê"
+1540 IF Y=7 THEN U$=" ³####.## æH"
+1550 PRINT USING U$;S(Z,Y);
+1560 NEXT Y:PRINT " ³";
+1570 NEXT Z
+1580 PRINT :COLOR 0,7:PRINT " to select length.....press 3 ":COLOR 7,0
+1590 GOSUB 3440   'PRT options
+1600 '
+1610 '.....select an antenna
+1620 LOCATE 23
+1630 PRINT " ENTER: Your choice of length H1.....(";UM$;;")";:INPUT L:L=L/UM
+1640 Z=L/12/984*F*360  'length in degrees
+1650 LOCATE 5,26:PRINT SPC(54);     'erase H1 length display
+1660 VIEW PRINT 11 TO 24:CLS:VIEW PRINT:LOCATE 11
+1670 GOSUB 1800        'solve equations
+1680 Z1=Z:GOSUB 2710   'screen printout
+1690 GOSUB 3440        'hard copy
+1700 LOCATE 25,1:PRINT C$;:LOCATE 23:COLOR 0,7
+1710 '
+1720 PRINT " Do you want to try another length?   (y/n) "
+1730 COLOR 7,0
+1740 Z$=INKEY$:IF Z$=""THEN 1740
+1750 IF Z$="n"THEN GOSUB 190:GOTO 3080
+1760 IF Z$="y"THEN GOSUB 190:GOTO 1610
+1770 GOTO 1740
+1780 END
+1790 '
+1800 '.....single element equations
+1810 I=1                            '1 ampere base current
+1820 H1=984*Z/(F*360)*12            'length of H1 in inches
+1830 A=Z/2*I                        'area in degree-amperes
+1840 K=Z^2/(312*A^2)                'K=.0128
+1850 RR=K*A^2                       'radiation resistance in ohms
+1860 KM=60*(LOG(2*H1/(DH1/2))-1)    'mean characteristic impedance
+1870 DR=Z*PI/180                    'elec. length in radians
+1880 XL=KM*(1/TAN(DR))              'inductive reactance required
+1890 UH=XL/(2*PI*F)                 'inductor value in æH
+1900 RETURN
+1910 '
+1920 '.....double element
+1930 VIEW PRINT 10 TO 24:CLS:VIEW PRINT:LOCATE 10
+1940 PRINT UL$;
+1950 LOCATE CSRLIN-1,1:PRINT "Õ";:LOCATE ,30:PRINT"Ñ";:LOCATE ,59:PRINT "Ñ";:
+1960 LOCATE ,68:PRINT "Ñ";:LOCATE ,(80):PRINT "¸";
+1970 LOCATE CSRLIN-1,33:PRINT " TYPICAL VALUES "
+1980 PRINT "³ÚÄÄÄÄÄÄÄÄ Length H1 ÄÄÄÄÄÄÄ¿";TAB(30);
+1990 PRINT "³ÚÄÄÄÄÄÄÄÄ Length H2 ÄÄÄÄÄÄÄ¿";
+2000 PRINT TAB(59);;"³Radiat'n³  Loading";
+2010 PRINT TAB(80);"³";
+2020 PRINT "³   deg  ³   cm.   ³   in.";TAB(30);
+2030 PRINT "³   deg  ³   cm.   ³   in.";
+2040 PRINT TAB(59);"³ Resis.";TAB(68);;"³   Coil";
+2050 PRINT TAB(80);"³";
+2060 FOR Z=1 TO 9
+2070 GOSUB 2540   'solve equations
+2080  D(Z,1)=H1                'H1 in degrees
+2090  D(Z,3)=H1N               'H1 in inches
+2100  D(Z,2)=H1N*2.539999          'H1 in cm.
+2110  D(Z,4)=H2                'H2 in degrees
+2120  D(Z,6)=H2N               'H2 in inches
+2130  D(Z,5)=H2N*2.539999          'H2 in cm.
+2140  D(Z,7)=RR
+2150  D(Z,8)=UH
+2160 NEXT Z
+2170 '
+2180 '.....screen display
+2190 LOCATE 9,26:PRINT "Sum of lengths H1 + H2.....";USING U1$;(H1N+H2N)*2.539999;
+2200 PRINT " cm.  =";USING "####.##";H1N+H2N;:PRINT " in."
+2210 LOCATE 13
+2220 FOR Z=1 TO 9:FOR Y=1 TO 8
+2230 IF Y=1 OR Y=4 THEN U$="³###.##ø "
+2240 IF Y=2 OR Y=3 OR Y=5 OR Y=6 THEN U$="³#####.## "
+2250 IF Y=7 THEN U$="³##.## ê "
+2260 IF Y=8 THEN U$="³####.## æh "
+2270 PRINT USING U$;D(Z,Y);
+2280 NEXT Y:PRINT "³";
+2290 NEXT Z
+2300 PRINT :COLOR 0,7:PRINT " to select length.....press 3 ":COLOR 7,0
+2310 GOSUB 3440
+2320 '
+2330 '.....select an antenna
+2340 LOCATE 23
+2350 PRINT " ENTER: Your choice of length H1.....(";UM$;;")";:INPUT Z:Z=Z/UM
+2360 H1=Z/12/984*F*360     'length in electrical degrees
+2370 LOCATE 5,26:PRINT SPC(54);     'erase H1 length display
+2380 LOCATE 7,26:PRINT SPC(54);     'erase H2 length display
+2390 LOCATE 9,26:PRINT SPC(54);     'erase H1+h2 length display
+2400 VIEW PRINT 11 TO 24:CLS:VIEW PRINT:LOCATE 11
+2410 GOSUB 2570          'solve equations
+2420 Z1=H1:Z2=H2:GOSUB 2710    'screen printout
+2430 GOSUB 3440                'PRT options
+2440 LOCATE 25,1:PRINT C$;:LOCATE 23:COLOR 0,7
+2450 '
+2460 PRINT " Do you want to try another?   (y/n) "
+2470 COLOR 7,0
+2480 Z$=INKEY$:IF Z$=""THEN 2480
+2490 IF Z$="n"THEN GOSUB 190:GOTO 3080
+2500 IF Z$="y"THEN GOSUB 190:GOTO 2330
+2510 GOTO 1740
+2520 END
+2530 '
+2540 '.....double element equations
+2550 H1=H*Z/10                           'H1 electrical lengths in degrees
+2560 '
+2570 H2=H-H1                             'H2 electrical lengths in degrees
+2580 H1N=984*H1/(F*360)*12               'H1 length in inches
+2590 H2N=984*H2/(F*360)*12               'H2 length in inches
+2600 DR1=H1*PI/180                       'H1 elec. length in radians
+2610 DR2=H2*PI/180                       'H2 elec. length in radians
+2620 A=5.000000E-01*(H1*(1+COS(DR1))+H2*COS(DR1))  'area in degree-amperes
+2630 K=1.279999E-02                             'K=.0128
+2640 RR=K*A^2                            'radiation resistance in ohms
+2650 KM1=60*(LOG(2*H1N/(DH1/2))-1)       'H1 mean characteristic impedance
+2660 KM2=60*(LOG(2*H2N/(DH2/2))-1)       'H2 mean characteristic impedance
+2670 XL=KM2/TAN(DR2)-KM1*TAN(DR1)        'inductive reactance required
+2680 UH=XL/(2*PI*F)                      'inductor value in æH
+2690 RETURN
+2700 '
+2710 '.....specification printout
+2720 VIEW PRINT 10 TO 24:CLS:VIEW PRINT:LOCATE 10
+2730 PRINT UL$;
+2740 PRINT " Length H1 (electrical degrees)....H1=";USING U2$;Z1;:PRINT "ø"
+2750 IF I$="s"THEN 2770
+2760 PRINT " Length H2 (electrical degrees)....H2=";USING U2$;Z2;:PRINT "ø"
+2770 PRINT " Degree-ampere area.................A=";USING U3$;A
+2780 PRINT " K constant.........................K=";USING U3$;K
+2790 PRINT " Radiation resistance..............RR=";USING U2$;RR;:PRINT " ê"
+2800 IF I$="s"THEN 2840
+2810 PRINT " H1 characteristic impedance......Km1=";USING U2$;KM1;:PRINT " ê"
+2820 PRINT " H2 characteristic impedance......Km2=";USING U2$;KM2;:PRINT " ê"
+2830 GOTO 2850
+2840 PRINT " H1 characteristic impedance.......Km=";USING U2$;KM;:PRINT " ê"
+2850 PRINT " Capacitive reactance..............XL=";USING U2$;XL;:PRINT " ê"
+2860 PRINT " Loading coil inductance.............=";USING U2$;UH;:PRINT " æH"
+2870 'RC1=XL/50:  EF1=RR/(RR+RC1)*100
+2880 'RC2=XL/300: EF2=RR/(RR+RC2)*100
+2890 'RC3=XL/450: EF3=RR/(RR+RC3)*100
+2900 'PRINT " Coil loss resistance: Q50 coil....RC=";USING U2$;RC1;:PRINT " ê";
+2910 'PRINT USING ", Radiation efficiency= ##.##%";EF1
+2920 'PRINT "                     : Q300 coil...RC=";USING U2$;RC2;:PRINT " ê";
+2930 'PRINT USING ", Radiation efficiency= ##.##%";EF2
+2940 'PRINT "                     : Q450 coil...RC=";USING U2$;RC3;:PRINT " ê";
+2950 'PRINT USING ", Radiation efficiency= ##.##%";EF3
+2960 IF I$="d"THEN 3000
+2970 LOCATE 5,26:PRINT "Length of element H1.......";USING U1$;H1*2.539999;
+2980 PRINT " cm.  =";USING "####.##";H1;:PRINT " in."
+2990 GOTO 3060
+3000 LOCATE 5,26:PRINT "Length of element H1.......";USING U1$;H1N*2.539999;
+3010 PRINT " cm.  =";USING "####.##";H1N;:PRINT " in."
+3020 LOCATE 7,26:PRINT "Length of element H2.......";USING U1$;H2N*2.539999;
+3030 PRINT " cm.  =";USING "####.##";H2N;:PRINT " in."
+3040 LOCATE 9,26:PRINT "Sum of lengths H1 + H2.....";USING U1$;(H1N+H2N)*2.539999;
+3050 PRINT " cm.  =";USING "####.##";H1N+H2N;:PRINT " in."
+3060 RETURN
+3070 '
+3080 '.....end
+3090 COLOR 0,7
+3100 PRINT " Do you want to design this coil?   (y/n) "
+3110 COLOR 7,0
+3120 Z$=INKEY$:IF Z$=""THEN 3120
+3130 IF Z$="n"THEN GOSUB 190:GOTO 3170
+3140 IF Z$="y"THEN CLS:U=UH:FQ=F:WHIP=1:CHAIN"coildsgn"
+3150 GOTO 3120
+3160 GOSUB 3440
+3170 GOTO 230   'start
+3180 END
+3190 '
+3200 '.....preface
+3210 TB=7
+3220 PRINT TAB(TB);
+3230 PRINT "This program purposely omits end effect calculation to ensure that"
+3240 PRINT TAB(TB);
+3250 PRINT "an antenna is electrically overlength. This is so that resonance at"
+3260 PRINT TAB(TB);
+3270 PRINT "the design frequency can be obtained easily by removing a turn or"
+3280 PRINT TAB(TB);
+3290 PRINT "two from the loading coil."
+3300 PRINT
+3310 PRINT TAB(TB);
+3320 PRINT "Optimum loading coil Q is attained when the coil Length/Diameter"
+3330 PRINT TAB(TB);
+3340 PRINT "ratio is at or near 0.5. Diameter of loading coil conductor"
+3350 PRINT TAB(TB);
+3360 PRINT "(wire or tubing) should be as large as practicable. Loading coil"
+3370 PRINT TAB(TB);
+3380 PRINT "turns should be removed, NOT shorted, for tuning purposes."
+3390 PRINT
+3400 PRINT TAB(TB);
+3410 PRINT "(Ref. THE ARRL ANTENNA BOOK, 18th Edition, pages 16-5 TO 16-11)"
+3420 RETURN
+3430 '
+3440 '.....PRT
+3450 KEY OFF:GOSUB 3520:LOCATE 25,5:COLOR 0,2
+3460 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+3470 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+3480 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 3480 ELSE GOSUB 3520
+3490 IF Z$="3"THEN RETURN
+3500 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+3510 IF Z$="2"THEN LPRINT CHR$(12) ELSE 3450
+3520 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

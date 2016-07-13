@@ -1,0 +1,255 @@
+1 COMMON A, AL, B, BASEONLY, C, C$, C1, CAT$, CC, CKT$, D, D$, DD, DIA, DIMN$, DMS, E, EO, EX$, F, F$, FD, FF, FQ, FRQ, G$, GO$, I, I$, L, LATLONG, LD, LL, LN, LS, LW, LX, MAX, MENU, MIN, MX, N, NN, NT, OV, P, PI, PROG$, Q, QQ, QU, R, RA, RC, T, T$, U, U$, UH, UL$, V$, VC, W, WHIP, WIRD, WW, X, X$, X1, XS, Z$, ZP, ZS
+5 'OMMON PROG$,DMS
+10 'MOONTRAC - Coordinates of the Moon - 19 MAR 97 rev. 10 OCT 97
+20 KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 PROG$="moontrac"
+50 
+60 COLOR 7,0,1
+70 PI=3.141592
+80 P5=2*PI       'Radians per Cycle
+90 D5=360/P5     'Constant for conversion to Degrees
+100 R5=P5/360     'Constant for conversion to Radians
+110 '
+120 '.....start
+130 CLS:COLOR 15,2
+140 PRINT " MOON TRACKER";TAB(55);;"by Lance Collister WA1JXN ";
+150 PRINT STRING$(80,32);
+160 LOCATE CSRLIN-1,20:PRINT "edited for HAMCALC by George Murphy VE3ERP"
+170 COLOR 1,0:PRINT STRING$(80,223);:COLOR 7,0
+180 GOSUB 2080    'preface
+190 PRINT :COLOR 0,7:LOCATE ,9
+200 PRINT " Do you want to run the EQUIVALENT VALUES program now?  (y/n) "
+210 COLOR 7,0
+220 Z$=INKEY$:IF Z$=""THEN 220
+230 IF Z$="y"THEN CLS:DMS=1:CHAIN "equiv"
+240 IF Z$="n"THEN LOCATE CSRLIN-1:PRINT STRING$(80,32);:GOTO 260
+250 GOTO 220
+260 COLOR 0,7:LOCATE 25,21
+270 PRINT " Press 1 to RUN program or 0 to EXIT....";:COLOR 7,0
+280 Z$=INKEY$:IF Z$=""THEN 280
+290 IF Z$="0"THEN CLS:RUN EX$
+300 IF Z$="1"THEN 320
+310 GOTO 280
+320 VIEW PRINT 4 TO 24:CLS:VIEW PRINT:LOCATE 4
+330 PRINT " ENTER: Your latitude in decimal degrees (+ø if North, -ø if South)";
+340 INPUT L5:L5=L5*R5    'latitude in radians
+350 PRINT " ENTER: Your longitude in decimal degrees (+ø if East, -ø if West) ";
+360 INPUT L6:L6=-L6*R5   'longitude in radians
+370 LTN=INT(L6*180/PI/15)*100   'UTC time adjustment to local time
+380 I=30    'displayed time increment in minutes
+390 I6=90   'maximum elevation to be calculated
+400 INPUT " ENTER: Year (4 digits)...";Y(1)
+410 INPUT " ENTER: Month number......";F(1)
+420 INPUT " ENTER: Day number........";V(1)
+430 N5=1
+440 FOR N=1 TO N5
+450 E1=2400
+460 B=0
+470 Y=Y(N):Y$=STR$(Y):Y$=RIGHT$(Y$,LEN(Y$)-1)
+480 M=F(N):M$=STR$(M):M$=RIGHT$(M$,LEN(M$)-1)
+490 D=V(N):D$=STR$(D):D$=RIGHT$(D$,LEN(D$)-1)
+500 PRINT
+510 CLS
+520 LA=L5*180/PI:LO=L6*180/PI
+530 IF LA<0 THEN LA$="S"ELSE LA$="N"
+540 IF LO<0 THEN LO$="E"ELSE LO$="W"
+550 PRINT " POSITION OF THE MOON on ";Y$;;"/";M$;;"/";D$;;" GMT as seen from";
+560 PRINT USING "####.#ø";LA;:PRINT LA$;
+570 PRINT USING "####.#ø";LO;:PRINT LO$
+580 PRINT STRING$(80,205);
+590 PRINT " LST = Local Solar Time; ÷y = yesterday; ÷t = tomorrow"
+600 PRINT STRING$(80,205);
+610 PRINT " GMT";TAB(12);"GHA";TAB(20);"DECLIN";TAB(29);"WINDOW";TAB(41);"LST";
+620 PRINT TAB(49);"AZIMUTH";TAB(59);"ELEVATION";
+630 PRINT STRING$(67,196);
+640 I1=2
+650 IF M>=3 THEN 730         'Julian Date Calculation
+660 IF INT((Y-1853)/4)<11 THEN 690
+670 C1=-1
+680 GOTO 700
+690 C1=0
+700 J1=365*(Y-1853)+D+30*(M+9)+INT((M+10)/2)
+710 J2=INT((Y-1853)/4)+1+C1
+720 GOTO 840
+730 IF INT((Y-1852)/4)<11 THEN 760
+740 C1=-1
+750 GOTO 770
+760 C1=0
+770 IF M=9 THEN 810
+780 IF M=11 THEN 810
+790 C2=0
+800 GOTO 820
+810 C2=1
+820 J1=365*(Y-1852)+D+30*(M-3)+INT((M-2)/2)
+830 J2=INT((Y-1852)/4)+C1+C2
+840 J=J1+J2                 'Julian Date
+850 T1=J-1.747250E+04
+860 '
+870 '.....compute a row of data
+880 D9=(B-INT(B/100)*100)+INT(B/100)*60
+890 D6=(E1-INT(E1/100)*100)+INT(E1/100)*60
+900 D7=D9-D6
+910 D8=D7-I
+920 IF D7>0 THEN 940
+930 GOTO 960
+940 IF D8>=0 THEN 2030
+950 B=E1
+960 T=(B-INT(B/100)*100)/1440+INT(B/100)/24      'Calc of moon lat and long
+970 T5=T1+T
+980 K1=((7.512130E-01+3.660110E-02*T5)-INT(7.512130E-01+3.660110E-02*T5))*P5
+990 K2=((8.225129E-01+3.629159E-02*T5)-INT(8.225129E-01+3.629159E-02*T5))*P5
+1000 K3=((9.957659E-01+2.737780E-03*T5)-INT(9.957659E-01+2.737780E-03*T5))*P5
+1010 K4=((9.742709E-01+3.386320E-02*T5)-INT(9.742709E-01+3.386320E-02*T5))*P5
+1020 K5=((3.125249E-02+3.674820E-02*T5)-INT(3.125249E-02+3.674820E-02*T5))*P5
+1030 L8=K1+6.580001E-01*R5*SIN(2*K4)+6.289000*R5*SIN(K2)
+1040 L8=L8-1.274000*R5*SIN(K2-2*K4)-1.860000E-01*R5*SIN(K3)
+1050 L8=L8+2.140000E-01*R5*SIN(2*K2)-1.140000E-01*R5*SIN(2*K5)
+1060 L8=L8-5.900001E-02*R5*SIN(2*K2-2*K4)-5.700001E-02*R5*SIN(K2+K3-2*K4)
+1070 K6=K5+6.593000E-01*R5*SIN(2*K4)+6.230299*R5*SIN(K2)-1.271999*R5*SIN(K2-2*K4)
+1080 L7=5.144000*R5*SIN(K6)-1.459999E-01*R5*SIN(K5-2*K4)
+1090 '.....Calc of right ascension (A=R1) and Declination (D1)
+1100 D1=COS(L7)*SIN(L8)*3.978210E-01+SIN(L7)*9.174630E-01
+1110 D1=ATN(D1/(SQR(1-D1^2)))
+1120 G1=5.050000E+01+((D1/7.289999E-01))*D5          'Test for start of EUROPEAN window
+1130 G2=80+((D1)/(8.080000E-01))*D5          'Test for start AMERICAS end EUROPEAN
+1140 G3=1.415000E+02-((D1)*(7.379999E-01)*D5)       'Test for start FAR EASTERN end AMERICAS
+1150 G4=1.705000E+02-((D1)*(8.570001E-01)*D5)   'Test for end of FAR EASTERN window
+1160 A2=COS(L7)*COS(L8)/COS(D1)
+1170 A1=(COS(L7)*SIN(L8)*9.174630E-01-SIN(L7)*3.978210E-01)/COS(D1)
+1180 A=ATN(A1/A2)
+1190 GOSUB 1450
+1200 R1=A
+1210 L1=6.570979E-02*T1
+1220 L=T*24*1.002737+6.646055+(L1-INT(L1/24)*24)
+1230 L=(L-INT(L/24)*24)
+1240 G=(L/24)*P5-R1 'Calc of Greenwich Hour Angle, G, from local sidereal time
+1250 IF G<P5 THEN 1280
+1260 G=G-P5
+1270 GOTO 1310
+1280 IF G<0 THEN 1300
+1290 GOTO 1310
+1300 G=G+P5
+1310 H=L6-G                  'Calc of your Local Hour Angle, H, from GHA
+1320 E3=COS(L5)*COS(H)*COS(D1)+SIN(D1)*SIN(L5)         'Calc of Elevation, E
+1330 E2=SQR(1-E3^2)
+1340 E=ATN((E3/E2)-(1/(6.133000E+01*E2)))
+1350 F=ATN(E3/E2)
+1360 IF E<0 THEN 1980
+1370 IF E>I6*R5 THEN 1980
+1380 A2=SIN(D1)/(COS(L5)*COS(F))               'Calc of Azimuth, A
+1390 A2=A2-(SIN(L5)/COS(L5))*(SIN(F)/COS(F))          'cos AZ
+1400 A1=SIN(L5)*SIN(D1)+COS(L5)*COS(D1)*COS(H)
+1410 A1=(SIN(H)*COS(D1))/SQR(1-A1^2)                  'sin AZ
+1420 A=ATN(A1/A2)                              'azimuth=arctan(sin/cos)
+1430 GOSUB 1450
+1440 GOTO 1600
+1450 IF A=0 THEN 1470 'Begin removal of ambiguities incurred using ATN function
+1460 GOTO 1510
+1470 IF A2<0 THEN 1490
+1480 GOTO 1590
+1490 A=P5/2
+1500 GOTO 1590
+1510 IF A>0 THEN 1570
+1520 IF A2<0 THEN 1550
+1530 A=P5+A
+1540 GOTO 1590
+1550 A=P5+(A-P5/2)
+1560 GOTO 1590
+1570 IF A2>=0 THEN 1590
+1580 A=A+P5/2
+1590 RETURN
+1600 IF (T-11)>(2*I)/1440 THEN 1620
+1610 GOTO 1630
+1620 PRINT
+1630 BS=CINT(B)                  'GMT
+1640 Z1=CINT(A*D5*10)/10         'AZ
+1650 Z2=CINT(E*D5*10)/10         'EL
+1660 Z3=CINT(G*D5*10)/10         'GHA
+1670 Z4=CINT(D1*D5*10)/10        'DEC
+1680 IF Z4<0 THEN 1810           'Begin tests for possible Universal Windows
+1690 IF Z3<G1 THEN 1810
+1700 IF Z3>G2 THEN 1720
+1710 GOTO 1750
+1720 IF Z3<G3 THEN 1770
+1730 IF Z3>G4 THEN 1810
+1740 GOTO 1790
+1750 Y$="European"            'European to Americas window, EU-W
+1760 GOTO 1820
+1770 Y$="Americas"            'Americas universal window, W-W
+1780 GOTO 1820
+1790 Y$="Far East"            'Far Eastern to Americas window, JA-VK-ZL
+1800 GOTO 1820
+1810 Y$=" "
+1820 ES=CINT(B)-LTN           'Local time adjustment
+1830 E$=""
+1840 IF ES<0 THEN ES=ES+2400:E$=" ÷y"
+1850 IF ES>2400 THEN ES=ES-2400:E$=" ÷t"
+1860 N$="###.#ø"
+1870 BS$=STR$(BS):BS$=RIGHT$(BS$,LEN(BS$)-1)
+1880 IF LEN(BS$)<4 THEN BS$="0"+BS$:GOTO 1880
+1890 ES$=STR$(ES):ES$=RIGHT$(ES$,LEN(ES$)-1)
+1900 IF LEN(ES$)<4 THEN ES$="0"+ES$:GOTO 1900
+1910 ES$=LEFT$(ES$,2)+":"+RIGHT$(ES$,2)
+1920 PRINT TAB(2); BS$;:PRINT TAB(10); USING N$;Z3;:PRINT TAB(20); USING N$;Z4;
+1930 PRINT TAB(28); Y$;:PRINT TAB(40); ES$+E$;:PRINT TAB(50); USING N$;Z1;
+1940 PRINT TAB(60); USING N$;Z2;
+1950 LN=CSRLIN:IF LN<24 THEN PRINT "";:GOTO 1970
+1960 GOSUB 2450:CLS
+1970 I1=T
+1980 B=B+I
+1990 Z=(B-INT(B/100)*100)-60
+2000 IF Z<0 THEN 870
+2010 B=INT(B/100)*100+100+Z
+2020 GOTO 870     'compute next row of data
+2030 NEXT N
+2040 PRINT STRING$(67,196)
+2050 N=0
+2060 GOSUB 2450:GOTO 120
+2070 '
+2080 '.....preface
+2090 TB=7
+2100 PRINT TAB(TB);
+2110 PRINT "Displays GHA, Declination, Azimuth and Elevation of the moon from a"
+2120 PRINT TAB(TB);
+2130 PRINT "selected latitude and longitude on a selected date. 'Windows'"
+2140 PRINT TAB(TB);
+2150 PRINT "between the Western Hemisphere and other parts of the world are"
+2160 PRINT TAB(TB);
+2170 PRINT "also indicated where appropriate."
+2180 PRINT
+2190 PRINT TAB(TB);
+2200 PRINT "Position is calculated at 30 minute intervals during the portions"
+2210 PRINT TAB(TB);
+2220 PRINT "of the GMT day when the moon is above the local horizon."
+2230 PRINT
+2240 PRINT TAB(TB);
+2250 PRINT "Latitude and longitude are computed in decimal degrees. If you wish"
+2260 PRINT TAB(TB);
+2270 PRINT "to convert degree/minute/second coordinates to decimal degrees, run"
+2280 PRINT TAB(TB);
+2290 PRINT "the EQUIVALENT VALUES program."
+2300 PRINT
+2310 PRINT TAB(TB);
+2320 PRINT "If you are making a printout, select option (1) from the printer"
+2330 PRINT TAB(TB);
+2340 PRINT "control message bar at the bottom of each screen (i.e., DO NOT"
+2350 PRINT TAB(TB);
+2360 PRINT "advance paper) if you want a single continuous tabular printout."
+2370 PRINT TAB(TB);
+2380 PRINT
+2390 PRINT TAB(TB);
+2400 PRINT "(For further information see the 1997 ARRL HANDBOOK for RADIO"
+2410 PRINT TAB(TB);
+2420 PRINT "AMATEURS, page 23.55).";
+2430 RETURN
+2440 '
+2450 'PRT
+2460 KEY OFF:GOSUB 2530:LOCATE 25,5:COLOR 0,2
+2470 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+2480 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+2490 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 2490 ELSE GOSUB 2530
+2500 IF Z$="3"THEN RETURN
+2510 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+2520 IF Z$="2"THEN LPRINT CHR$(12) ELSE 2460
+2530 LOCATE 25,1:PRINT STRING$(80,32);:RETURN

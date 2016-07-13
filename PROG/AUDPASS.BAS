@@ -1,0 +1,257 @@
+1 COMMON A, AL, B, BASEONLY, C, C$, C1, CAT$, CC, CKT$, D, D$, DD, DIA, DIMN$, DMS, E, EO, EX$, F, F$, FD, FF, FQ, FRQ, G$, GO$, I, I$, L, LATLONG, LD, LL, LN, LS, LW, LX, MAX, MENU, MIN, MX, N, NN, NT, OV, P, PI, PROG$, Q, QQ, QU, R, RA, RC, T, T$, U, U$, UH, UL$, V$, VC, W, WHIP, WIRD, WW, X, X$, X1, XS, Z$, ZP, ZS
+10 'AUDPASS - Passive Audio Filters - 05 MAY 95  rev. 08 APR 97
+20 CLS:KEY OFF
+30 IF EX$=""THEN EX$="EXIT"
+40 COLOR 7,0,0
+50 DIM C(7)
+60 DIM L(3)
+70 PI=3.141592
+80 UL$=STRING$(80,205)
+90 U1$="#####.#"
+100 U2$="####.###"
+110 '
+120 '.....start
+130 FOR Z=1 TO 7:C(Z)=0:NEXT Z
+140 FOR Z=1 TO 3:L(Z)=0:NEXT Z
+150 COLOR 15,2
+160 PRINT " PASSIVE AUDIO FILTERS";TAB(57);"by George Murphy VE3ERP ";
+170 COLOR 1,0:PRINT STRING$(80,223);
+180 COLOR 7,0
+190 '
+200 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+210 MENU=1
+220 RO=2:CO=3:GOSUB 880
+230 COLOR 15,0
+240 LOCATE 9,4:PRINT "ÀÄ<1> ELLIPTIC - 1 dB/50 dB"
+250 COLOR 7,0
+260 RO=2:CO=38:GOSUB 1170
+270 COLOR 15,0
+280 LOCATE 9,41:PRINT "ÀÄ<2> ELLIPTIC - 0.18 dB/50.1 dB"
+290 COLOR 7,0
+300 RO=9:CO=38:GOSUB 1460
+310 COLOR 15,0
+320 LOCATE 16,42:PRINT "ÀÄ<3> ELLIPTIC - 0.18 dB/81 dB"
+330 COLOR 7,0
+340 MENU=0
+350 RO=16:CO=3:GOSUB 1700
+360 COLOR 15,0
+370 LOCATE 23,4:PRINT "ÀÄ<4> BUTTERWORTH HIGH-PASS"
+380 COLOR 7,0
+390 RO=16:CO=38:GOSUB 1920
+400 COLOR 15,0
+410 LOCATE 23,40:PRINT "ÀÄ<5> BUTTERWORTH LOW-PASS";
+420 COLOR 7,0
+430 '
+440 '.....credits
+450 COLOR 15,2
+460 LOCATE 11,4:PRINT " Program suggested by Roel   "
+470 LOCATE 12,4:PRINT " Koekoek, PA0RBK, based on   "
+480 LOCATE 13,4:PRINT " data developed by Willem    "
+490 LOCATE 14,4:PRINT " Chaudron, PE1GCS            "
+500 COLOR 7,0
+510 LOCATE 25,12:COLOR 15,1
+520 PRINT " Press number in < > to select filter, or press 0 to EXIT ";
+530 COLOR 7,0
+540 Z$=INKEY$:Z=VAL(Z$)
+550 IF Z$="0"THEN CLS:RUN EX$
+560 IF Z>=1 AND Z<=5 THEN 590
+570 GOTO 540
+580 '
+590 '.....input parameters
+600 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+610 GOSUB 2320    'preface notes
+620 PRINT UL$;
+630 INPUT " ENTER: Load Resistance.......(ohms)";R
+640 INPUT " ENTER: Cutoff Frequency........(Hz)";FC
+650 VIEW PRINT 3 TO 24:CLS:VIEW PRINT:LOCATE 3
+660 KC=10^6/(2*PI*FC*R)        'capacitance constant
+670 KL=R*10^3/(2*PI*FC)        'inductance constant
+680 IF Z=1 THEN 740
+690 IF Z=2 THEN 1000
+700 IF Z=3 THEN 1290
+710 IF Z=4 THEN 1580
+720 IF Z=5 THEN 1800
+730 '
+740 '.....5-pole, 1 dB/50 dB
+750 C(1)=1.932999*KC
+760 C(2)=2.230000E-01*KC
+770 C(3)=2.391999*KC
+780 C(4)=6.259999E-01*KC
+790 C(5)=1.634999*KC
+800 L(1)=9.629999E-01*KL
+810 L(2)=7.500000E-01*KL
+820 PRINT " 5-POLE ELLIPTIC LOW-PASS FILTER (1 dB / 50 dB)"
+830 PRINT UL$;
+840 RO=4:CO=2:GOSUB 880
+850 PRINT UL$;
+860 GOTO 2020
+870 '
+880 COLOR 0,7
+890 LOCATE RO+1,CO:PRINT "          L1        L2         "
+900 LOCATE RO+2,CO:PRINT "      ÚÄïïïïïÄ¿ ÚÄïïïïïÄ¿      "
+910 LOCATE RO+3,CO:PRINT "  ÄÄÄÂ´   C2  ÃÂ´   C4  ÃÂÄÄÄ  "
+920 LOCATE RO+4,CO:PRINT "     ³ÀÄÄÄ×ÄÄÄÙ³ÀÄÄÄ×ÄÄÄÙ³     "
+930 LOCATE RO+5,CO:PRINT " ®R ÍØÍ C1    ÍØÍ C3  C5ÍØÍ R¯ "
+940 IF MENU=1 THEN RO=RO-1:GOTO 960
+950 LOCATE RO+6,CO:PRINT "     ³         ³         ³     "
+960 LOCATE RO+7,CO:PRINT "  ÄÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄ  "
+970 COLOR 7,0
+980 RETURN
+990 '
+1000 '.....7-pole, 0.18 dB/50.1 dB
+1010 C(1)=1.182999*KC
+1020 C(2)=1.852999E-01*KC
+1030 C(3)=1.534999*KC
+1040 C(4)=9.575999E-01*KC
+1050 C(5)=1.307000*KC
+1060 C(6)=6.754999E-01*KC
+1070 C(7)=8.543000E-01*KC
+1080 L(1)=1.202999*KL
+1090 L(2)=7.481999E-01*KL
+1100 L(3)=8.216999E-01*KL
+1110 PRINT " 7-POLE ELLIPTIC LOW-PASS FILTER (0.18 dB / 50.1 dB)"
+1120 PRINT UL$;
+1130 RO=4:CO=2:GOSUB 1170
+1140 PRINT UL$;
+1150 GOTO 2020
+1160 '
+1170 COLOR 0,7
+1180 LOCATE RO+1,CO:PRINT "          L1        L2        L3         "
+1190 LOCATE RO+2,CO:PRINT "      ÚÄïïïïïÄ¿ ÚÄïïïïïÄ¿ ÚÄïïïïïÄ¿      "
+1200 LOCATE RO+3,CO:PRINT "  ÄÄÄÂ´   C2  ÃÂ´   C4  ÃÂ´   C6  ÃÂÄÄÄ  "
+1210 LOCATE RO+4,CO:PRINT "     ³ÀÄÄÄ×ÄÄÄÙ³ÀÄÄÄ×ÄÄÄÙ³ÀÄÄÄ×ÄÄÄÙ³     "
+1220 LOCATE RO+5,CO:PRINT " ®R ÍØÍ C1    ÍØÍ C3    ÍØÍ C5  C7ÍØÍ R¯ "
+1230 IF MENU=1 THEN RO=RO-1:GOTO 1250
+1240 LOCATE RO+6,CO:PRINT "     ³         ³         ³         ³     "
+1250 LOCATE RO+7,CO:PRINT "  ÄÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄ  "
+1260 COLOR 7,0
+1270 RETURN
+1280 '
+1290 '.....7-pole, 0.18 dB/81 dB
+1300 C(1)=1.279999*KC
+1310 C(2)=6.499999E-02*KC
+1320 C(3)=1.942999*KC
+1330 C(4)=3.079000E-01*KC
+1340 C(5)=1.837000*KC
+1350 C(6)=2.182999E-01*KC
+1360 C(7)=1.143000*KC
+1370 L(1)=1.320999*KL
+1380 L(2)=1.182999*KL
+1390 L(3)=1.156999*KL
+1400 PRINT " 7-POLE ELLIPTIC LOW-PASS FILTER (0.18 dB / 81 dB)"
+1410 PRINT UL$;
+1420 RO=4:CO=2:GOSUB 1460
+1430 PRINT UL$;
+1440 GOTO 2020
+1450 '
+1460 COLOR 0,7
+1470 LOCATE RO+1,CO:PRINT "          L1        L2        L3         "
+1480 LOCATE RO+2,CO:PRINT "      ÚÄïïïïïÄ¿ ÚÄïïïïïÄ¿ ÚÄïïïïïÄ¿      "
+1490 LOCATE RO+3,CO:PRINT "   ÄÄÂ´   C2  ÃÂ´   C4  ÃÂ´   C6  ÃÂÄÄÄ  "
+1500 LOCATE RO+4,CO:PRINT "     ³ÀÄÄÄ×ÄÄÄÙ³ÀÄÄÄ×ÄÄÄÙ³ÀÄÄÄ×ÄÄÄÙ³     "
+1510 LOCATE RO+5,CO:PRINT " ®R ÍØÍ C1    ÍØÍ C3    ÍØÍ C5  C7ÍØÍ R¯ "
+1520 IF MENU=1 THEN RO=RO-1:GOTO 1540
+1530 LOCATE RO+6,CO:PRINT "     ³         ³         ³         ³     "
+1540 LOCATE RO+7,CO:PRINT "   ÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÁÄÄÄ  "
+1550 COLOR 7,0
+1560 RETURN
+1570 '
+1580 '.....hi-pass Butterworth
+1590 C(1)=1.618000*KC
+1600 C(2)=5.000000E-01*KC
+1610 C(3)=1.618000*KC
+1620 L(1)=6.179999E-01*KL
+1630 L(2)=6.179999E-01*KL
+1640 PRINT " BUTTERWORTH HIGH-PASS FILTER"
+1650 PRINT UL$;
+1660 RO=4:CO=2:GOSUB 1700
+1670 PRINT UL$;
+1680 GOTO 2020
+1690 '
+1700 COLOR 0,7
+1710 LOCATE RO+1,CO:PRINT "       C1      C2      C3      "
+1720 LOCATE RO+2,CO:PRINT "  ÄÄÄÄÄ×ÄÄÄÂÄÄÄ×ÄÄÄÂÄÄÄ×ÄÄÄÄÄ  "
+1730 LOCATE RO+3,CO:PRINT "           ³       ³           "
+1740 LOCATE RO+4,CO:PRINT " ®R       ïïï     ïïï       R¯ "
+1750 LOCATE RO+5,CO:PRINT "           ³L1     ³L2         "
+1760 LOCATE RO+6,CO:PRINT "  ÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄ  "
+1770 COLOR 7,0
+1780 RETURN
+1790 '
+1800 '.....lo-pass Butterworth
+1810 C(1)=1.618000*KC
+1820 C(2)=1.618000*KC
+1830 L(1)=6.179999E-01*KL
+1840 L(2)=2*KL
+1850 L(3)=6.179999E-01*KL
+1860 PRINT " BUTTERWORTH LOW-PASS FILTER"
+1870 PRINT UL$;
+1880 RO=4:CO=2:GOSUB 1920
+1890 PRINT UL$;
+1900 GOTO 2020
+1910 '
+1920 COLOR 0,7
+1930 LOCATE RO+1,CO:PRINT "       L1      L2      L3      "
+1940 LOCATE RO+2,CO:PRINT "  ÄÄÄïïïïïÄÂÄïïïïïÄÂÄïïïïïïÄÄ  "
+1950 LOCATE RO+3,CO:PRINT "           ³       ³           "
+1960 LOCATE RO+4,CO:PRINT " ®R       ÍØÍ C1  ÍØÍ C2    R¯ "
+1970 LOCATE RO+5,CO:PRINT "           ³       ³           "
+1980 LOCATE RO+6,CO:PRINT "  ÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄ  "
+1990 COLOR 7,0
+2000 RETURN
+2010 '
+2020 '.....screen display
+2030 LN=CSRLIN-1
+2040 FOR Z=1 TO 3
+2050 IF L(Z)=0 THEN 2080
+2060 L$="L"+RIGHT$(STR$(Z),1)
+2070 PRINT TAB(24);L$;" =";USING U2$;L(Z);:PRINT " mH"
+2080 NEXT Z
+2090 '
+2100 FOR Z=1 TO 7
+2110 IF C(Z)=0 THEN 2150
+2120 C$="C"+RIGHT$(STR$(Z),1)
+2130 LN=LN+1:LOCATE LN
+2140 PRINT " ";C$;" =";USING U2$;C(Z);:PRINT " æF"
+2150 NEXT Z
+2160 '
+2170 LOCATE RO+1,45:
+2180 PRINT "1-ohm, 1 radian/second"
+2190 LOCATE RO+3,45:
+2200 PRINT "Cutoff Frequency:   ";USING U1$;FC;:PRINT " Hz."
+2210 LOCATE RO+5,45
+2220 PRINT "Load Resistance ®R¯:";USING U1$;R;:PRINT " ê"
+2230 LOCATE 20,2:PRINT "Use nearest standard 5% tolerance capacitors and ";
+2240 PRINT "inductors."
+2250 PRINT " Toroid inductors may be designed using HAMCALC's Toroid Inductor ";
+2260 PRINT "Calculator."
+2270 PRINT UL$;
+2280 GOSUB 2480    'screen dump
+2290 CLS:GOTO 120  'start
+2300 END
+2310 '
+2320 '.....preface
+2330 T=10
+2340 PRINT TAB(T);
+2350 PRINT "The formulae used in this program were developed by Willem"
+2360 PRINT TAB(T);
+2370 PRINT "Chaudron, PE1GCS, primarily for use as audio filters. Roel"
+2380 PRINT TAB(T);
+2390 PRINT "Koekoek, PA0RBK, advises that he has also used this program"
+2400 PRINT TAB(T);
+2410 PRINT "to design RF filters that are reasonably accurate up to about"
+2420 PRINT TAB(T);
+2430 PRINT "30 MHz by entering the frequency in KHz and reading the results"
+2440 PRINT TAB(T);
+2450 PRINT "as being in nF and æH."
+2460 RETURN
+2470 '
+2480 'PRT
+2570 KEY OFF:GOSUB 2640:LOCATE 25,5:COLOR 0,2
+2580 PRINT " Send this page to:(1)Printer Queue? (2)Printout? ";
+2590 PRINT "(3)Next page? (1/2/3)";:COLOR 7,0
+2600 Z$=INKEY$:IF Z$<"1"OR Z$>"3"THEN 2600 ELSE GOSUB 2640
+2610 IF Z$="3"THEN RETURN
+2620 FOR I%=1 TO 24:FOR J%=1 TO 80:LPRINT CHR$(SCREEN(I%,J%));:NEXT J%:NEXT I%
+2630 IF Z$="2"THEN LPRINT CHR$(12) ELSE 2570
+2640 LOCATE 25,1:PRINT STRING$(80,32);:RETURN
