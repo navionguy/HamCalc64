@@ -1,0 +1,6 @@
+{
+  "name": "Hamcalc64",
+  "tagline": "HamCalc utilities by VE3ERP ported to Quick Basic, 64 bit.  (QB64)",
+  "body": "# HamCalc64\r\nHamCalc utilities by George Murphy, VE3ERP ported to Quick Basic, 64 bit.  (QB64)\r\n\r\nThe original code was developed for MS-DOS in GWBASIC.  That version is still \r\navailable for download at http://www.cq-amateur-radio.com/cq_ham_calc/cq_ham_calc.html\r\n\r\nI pulled it down and have *mostly* converted it to compile on 64 bit Windows using\r\nQB64. www.qb64.net  You're welcome to the modified sources here.  But know that more\r\nwork is needed before they are fully useable.\r\n\r\nRight now, the menu system sort of works, but only if you have the menus in \r\n\\\\HamCalc64\\Menu and the program files in \\\\HamCalc64\\Prog.  That's at the top\r\nof my list to fix next.\r\n\r\nThere are so many files, that once I compile them, they compile on both Windows and\r\nLinux, they are too big to store on github.  If I can find a nice place to hang them\r\non the internet, I will.\r\n\r\nDon\r\nWD4ON\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
